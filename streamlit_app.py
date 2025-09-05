@@ -74,16 +74,17 @@ def create_password_strength_chart(score):
     return fig
 
 def create_security_threats_chart():
-    """セキュリティ脅威の統計チャート"""
+    """セキュリティ脅威の統計チャート（IPA 2024年データベース）"""
+    # IPA 情報セキュリティ10大脅威 2024年版をベースにした脅威データ
     threats_data = {
-        '脅威の種類': ['フィッシング詐欺', 'マルウェア', 'パスワード攻撃', 'ソーシャルエンジニアリング', 'データ漏洩'],
-        '発生頻度(%)': [35, 28, 20, 12, 5]
+        '脅威の種類': ['ランサムウェア', 'フィッシング詐欺', 'サプライチェーン攻撃', '標的型攻撃', 'ゼロデイ攻撃', 'その他'],
+        '重要度': [30, 25, 15, 12, 10, 8]
     }
     
     df = pd.DataFrame(threats_data)
     
-    fig = px.pie(df, values='発生頻度(%)', names='脅威の種類',
-                 title='主なサイバーセキュリティ脅威の分布',
+    fig = px.pie(df, values='重要度', names='脅威の種類',
+                 title='IPA 情報セキュリティ10大脅威 2024年版（組織向け重要脅威）',
                  color_discrete_sequence=px.colors.qualitative.Set3)
     
     fig.update_traces(textposition='inside', textinfo='percent+label')
@@ -141,42 +142,51 @@ def main():
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            st.info("""
-            **【機密性 - Confidentiality】**
-            
-            🔐 許可された人だけが見れる盾
-            
-            • IDとパスワードによる認証
-            • データの暗号化
-            • アクセス権限の管理
-            """)
+            st.markdown("""
+            <div style="background-color: #d1ecf1; border: 2px solid #bee5eb; padding: 20px; border-radius: 10px; color: #0c5460;">
+            <h4 style="color: #0c5460; margin-top: 0;">🔐 機密性 - Confidentiality</h4>
+            <h5 style="color: #0c5460;">許可された人だけが見れる盾</h5>
+            <ul style="color: #0c5460; font-size: 15px; line-height: 1.6;">
+            <li>IDとパスワードによる認証</li>
+            <li>データの暗号化</li>
+            <li>アクセス権限の管理</li>
+            </ul>
+            </div>
+            """, unsafe_allow_html=True)
         
         with col2:
-            st.success("""
-            **【完全性 - Integrity】**
-            
-            ✅ データが改ざんされない盾
-            
-            • デジタル署名
-            • ハッシュ値による検証
-            • バックアップとバージョン管理
-            """)
+            st.markdown("""
+            <div style="background-color: #d4edda; border: 2px solid #c3e6cb; padding: 20px; border-radius: 10px; color: #155724;">
+            <h4 style="color: #155724; margin-top: 0;">✅ 完全性 - Integrity</h4>
+            <h5 style="color: #155724;">データが改ざんされない盾</h5>
+            <ul style="color: #155724; font-size: 15px; line-height: 1.6;">
+            <li>デジタル署名</li>
+            <li>ハッシュ値による検証</li>
+            <li>バックアップとバージョン管理</li>
+            </ul>
+            </div>
+            """, unsafe_allow_html=True)
         
         with col3:
-            st.warning("""
-            **【可用性 - Availability】**
-            
-            🔄 いつでも使えるようにする盾
-            
-            • システムの冗長化
-            • 定期的なバックアップ
-            • 災害復旧対策
-            """)
+            st.markdown("""
+            <div style="background-color: #fff3cd; border: 2px solid #ffeaa7; padding: 20px; border-radius: 10px; color: #856404;">
+            <h4 style="color: #856404; margin-top: 0;">🔄 可用性 - Availability</h4>
+            <h5 style="color: #856404;">いつでも使えるようにする盾</h5>
+            <ul style="color: #856404; font-size: 15px; line-height: 1.6;">
+            <li>システムの冗長化</li>
+            <li>定期的なバックアップ</li>
+            <li>災害復旧対策</li>
+            </ul>
+            </div>
+            """, unsafe_allow_html=True)
         
         # セキュリティ脅威の可視化
         st.subheader("🚨 現在のサイバーセキュリティ脅威")
         fig = create_security_threats_chart()
         st.plotly_chart(fig, use_container_width=True)
+        
+        st.caption("出典: IPA（独立行政法人情報処理推進機構）情報セキュリティ10大脅威 2024年版")
+        st.caption("参考URL: https://www.ipa.go.jp/security/10threats/10threats2024.html")
         
         st.markdown("""
         さあ、これから始まるシミュレーションで、この盾をどう使っていくか体験してみましょう！
@@ -206,9 +216,18 @@ def main():
             key="auth_choice"
         )
         
-        if auth_choice:
-            st.session_state.answers['auth'] = auth_choice
+        # 回答ボタンを追加
+        answer_submitted = False
+        if auth_choice and 'auth_answer_submitted' not in st.session_state:
+            if st.button("回答する", key="submit_auth"):
+                st.session_state.answers['auth'] = auth_choice
+                st.session_state.auth_answer_submitted = True
+                answer_submitted = True
+                st.rerun()
+        elif 'auth_answer_submitted' in st.session_state:
+            answer_submitted = True
             
+        if answer_submitted:
             st.markdown("---")
             
             if auth_choice == "C: IDとパスワードを入力した後、スマホのSMSに届く確認コードも入力する":
@@ -260,17 +279,17 @@ def main():
         # 疑似フィッシングメールの表示
         with st.container():
             st.markdown("""
-            <div style="border: 2px solid #ff4444; padding: 20px; background-color: #fff5f5; border-radius: 10px;">
-            <h4>⚠️ 緊急：MarketPlace アカウント停止のお知らせ</h4>
-            <hr>
-            <p><strong>送信者:</strong> security@market-place-official.com</p>
-            <p><strong>件名:</strong> 【緊急】アカウント確認が必要です</p>
-            <hr>
-            <p>お客様のMarketPlaceアカウントで不審なアクティビティが検出されました。</p>
-            <p><strong>24時間以内</strong>にアカウント情報を確認しないと、アカウントが永久停止されます。</p>
-            <p>今すぐ下記リンクからログインして確認してください：</p>
-            <p><a href="#" style="color: blue;">https://marketplace-security-check.net/login</a></p>
-            <p>※このメールは自動送信されています</p>
+            <div style="border: 3px solid #dc3545; padding: 25px; background-color: #f8f9fa; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <h3 style="color: #dc3545; margin-top: 0;">⚠️ 緊急：MarketPlace アカウント停止のお知らせ</h3>
+            <hr style="border-color: #dc3545;">
+            <p style="color: #212529; font-size: 16px; margin: 10px 0;"><strong>送信者:</strong> <span style="color: #dc3545;">security@market-place-official.com</span></p>
+            <p style="color: #212529; font-size: 16px; margin: 10px 0;"><strong>件名:</strong> 【緊急】アカウント確認が必要です</p>
+            <hr style="border-color: #dc3545;">
+            <p style="color: #212529; font-size: 16px; line-height: 1.6; margin: 15px 0;">お客様のMarketPlaceアカウントで不審なアクティビティが検出されました。</p>
+            <p style="color: #212529; font-size: 16px; line-height: 1.6; margin: 15px 0;"><strong style="color: #dc3545; font-size: 18px;">24時間以内</strong>にアカウント情報を確認しないと、アカウントが永久停止されます。</p>
+            <p style="color: #212529; font-size: 16px; line-height: 1.6; margin: 15px 0;">今すぐ下記リンクからログインして確認してください：</p>
+            <p style="margin: 20px 0;"><a href="#" style="color: #007bff; font-size: 16px; text-decoration: underline; background-color: #e3f2fd; padding: 8px 12px; border-radius: 4px; display: inline-block;">https://marketplace-security-check.net/login</a></p>
+            <p style="color: #6c757d; font-size: 14px; font-style: italic; margin: 15px 0;">※このメールは自動送信されています</p>
             </div>
             """, unsafe_allow_html=True)
         
@@ -286,9 +305,18 @@ def main():
             key="email_choice"
         )
         
-        if email_choice and email_choice != "選択してください":
-            st.session_state.answers['email'] = email_choice
+        # 回答ボタンを追加
+        email_answer_submitted = False
+        if email_choice and email_choice != "選択してください" and 'email_answer_submitted' not in st.session_state:
+            if st.button("回答する", key="submit_email"):
+                st.session_state.answers['email'] = email_choice
+                st.session_state.email_answer_submitted = True
+                email_answer_submitted = True
+                st.rerun()
+        elif 'email_answer_submitted' in st.session_state:
+            email_answer_submitted = True
             
+        if email_answer_submitted:
             st.markdown("---")
             
             if "怪しい" in email_choice:
@@ -361,16 +389,16 @@ def main():
                 st.markdown("### 📋 チェックリスト")
                 
                 # チェックボックス
-                check1 = st.checkbox("8文字以上にしましたか？", value=len(password) >= 8, disabled=True)
-                check2 = st.checkbox("大文字、小文字、数字、記号を混ぜましたか？", 
-                                   value=bool(re.search(r'[a-z]', password) and 
-                                           re.search(r'[A-Z]', password) and 
-                                           re.search(r'\d', password) and 
-                                           re.search(r'[!@#$%^&*(),.?":{}|<>]', password)), 
-                                   disabled=True)
-                check3 = st.checkbox("名前や誕生日など、推測されやすい文字列を避けていますか？",
-                                   value=not any(pattern in password.lower() for pattern in ['123', 'abc', 'password', 'admin', 'qwerty']),
-                                   disabled=True)
+                st.checkbox("8文字以上にしましたか？", value=len(password) >= 8, disabled=True)
+                st.checkbox("大文字、小文字、数字、記号を混ぜましたか？", 
+                           value=bool(re.search(r'[a-z]', password) and 
+                                   re.search(r'[A-Z]', password) and 
+                                   re.search(r'\d', password) and 
+                                   re.search(r'[!@#$%^&*(),.?":{}|<>]', password)), 
+                           disabled=True)
+                st.checkbox("名前や誕生日など、推測されやすい文字列を避けていますか？",
+                           value=not any(pattern in password.lower() for pattern in ['123', 'abc', 'password', 'admin', 'qwerty']),
+                           disabled=True)
             
             # フィードバック表示
             if feedback:
@@ -394,7 +422,7 @@ def main():
         **「長く」「複雑に」「推測されにくく」** が、あなたのデジタルライフを守る合言葉です。
         """)
         
-        # パスワード解読時間の可視化
+        # パスワード解読時間の可視化（複数のハードウェア構成）
         if password:
             length = len(password)
             has_upper = bool(re.search(r'[A-Z]', password))
@@ -410,21 +438,126 @@ def main():
             
             if char_space > 0 and length > 0:
                 combinations = char_space ** length
-                # 1秒で10億回試行と仮定
-                seconds = combinations / 2 / 1_000_000_000
                 
-                if seconds < 60:
-                    time_str = f"{seconds:.1f}秒"
-                elif seconds < 3600:
-                    time_str = f"{seconds/60:.1f}分"
-                elif seconds < 86400:
-                    time_str = f"{seconds/3600:.1f}時間"
-                elif seconds < 31536000:
-                    time_str = f"{seconds/86400:.1f}日"
-                else:
-                    time_str = f"{seconds/31536000:.1f}年"
+                # 様々な攻撃手法とハードウェア構成
+                attack_methods = {
+                    "個人PC（CPU）": {
+                        "speed": 1_000_000,  # 1秒で100万回
+                        "description": "Intel Core i7-13700K（約5万円）",
+                        "cost": "5万円",
+                        "accessibility": "🟢 個人レベル"
+                    },
+                    "ゲーミングPC（GPU）": {
+                        "speed": 50_000_000,  # 1秒で5000万回
+                        "description": "NVIDIA RTX 4070（約10万円）",
+                        "cost": "15万円",
+                        "accessibility": "🟡 愛好家レベル"
+                    },
+                    "高性能GPU": {
+                        "speed": 100_000_000,  # 1秒で1億回
+                        "description": "NVIDIA RTX 4090（約25万円）",
+                        "cost": "30万円",
+                        "accessibility": "🟡 プロレベル"
+                    },
+                    "マイニングリグ": {
+                        "speed": 500_000_000,  # 1秒で5億回
+                        "description": "RTX 4090 × 4台構成",
+                        "cost": "120万円",
+                        "accessibility": "🟠 組織レベル"
+                    },
+                    "専用クラスター": {
+                        "speed": 2_000_000_000,  # 1秒で20億回
+                        "description": "GPU 8台 + 専用サーバー",
+                        "cost": "500万円",
+                        "accessibility": "🔴 犯罪組織レベル"
+                    },
+                    "クラウドクラスター": {
+                        "speed": 10_000_000_000,  # 1秒で100億回
+                        "description": "AWS/Azure GPU大規模構成",
+                        "cost": "時間課金（数万円/時間）",
+                        "accessibility": "🔴 国家レベル"
+                    }
+                }
                 
-                st.info(f"🕐 このパスワードを総当たりで解読するのに必要な平均時間: **{time_str}**")
+                st.subheader("🖥️ ハードウェア別 解読時間比較")
+                
+                # テーブル形式で表示
+                attack_data = []
+                for method_name, method_info in attack_methods.items():
+                    seconds = combinations / 2 / method_info["speed"]  # 平均時間
+                    
+                    if seconds < 1:
+                        time_str = f"{seconds*1000:.0f}ミリ秒"
+                    elif seconds < 60:
+                        time_str = f"{seconds:.1f}秒"
+                    elif seconds < 3600:
+                        time_str = f"{seconds/60:.1f}分"
+                    elif seconds < 86400:
+                        time_str = f"{seconds/3600:.1f}時間"
+                    elif seconds < 31536000:
+                        time_str = f"{seconds/86400:.0f}日"
+                    elif seconds < 31536000000:
+                        time_str = f"{seconds/31536000:.0f}年"
+                    else:
+                        time_str = "数千年以上"
+                    
+                    attack_data.append({
+                        "ハードウェア構成": method_name,
+                        "解読時間": time_str,
+                        "機材詳細": method_info["description"],
+                        "概算コスト": method_info["cost"],
+                        "アクセス難易度": method_info["accessibility"]
+                    })
+                
+                # DataFrameとして表示
+                df_attacks = pd.DataFrame(attack_data)
+                st.dataframe(df_attacks, use_container_width=True, hide_index=True)
+                
+                st.markdown("""
+                ---
+                ### ⚠️ 現実的な脅威について
+                
+                **実際の攻撃で使われる手法:**
+                - **辞書攻撃**: よくあるパスワードリスト（rockyou.txt等）を使用 → 数秒〜数分
+                - **マスクアタック**: パターンを指定した総当たり → 数時間〜数日
+                - **ハイブリッド攻撃**: 辞書+ルールベース変換 → 数分〜数時間
+                - **レインボーテーブル**: 事前計算済みハッシュ表 → 瞬時〜数分
+                - **ソーシャルエンジニアリング**: 心理的手法で直接情報入手 → 瞬時
+                - **データ漏洩**: 他サイトから流出したパスワードを試行 → 数秒
+                
+                **現実的な防御戦略:**
+                """)
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.markdown("""
+                    **強度レベル1（基本）:**
+                    - 💪 12文字以上の長さ
+                    - 🔀 文字種類の混合
+                    - 🚫 辞書単語を避ける
+                    - 🔄 サイト別に異なるパスワード
+                    """)
+                
+                with col2:
+                    st.markdown("""
+                    **強度レベル2（推奨）:**
+                    - 🛡️ パスワードマネージャー使用
+                    - 📱 二要素認証の有効化
+                    - 🔄 定期的な変更（重要サービス）
+                    - 📧 セキュリティ通知の監視
+                    """)
+                
+                st.info("""
+                **💡 実践的なパスワード作成例:**
+                - ❌ 弱い例: `password123`, `yamada2024`
+                - ✅ 強い例: `Coffee#Morning@2024!`, `MyDog&3Cats=Family`
+                - 🏆 最強例: パスワードマネージャーで生成された32文字ランダム文字列
+                """)
+                
+                st.warning("""
+                **注意**: この情報は防御目的での教育用です。
+                実際のパスワード攻撃は違法行為であり、絶対に行ってはいけません。
+                """)
         
         col1, col2 = st.columns(2)
         with col1:
@@ -450,46 +583,49 @@ def main():
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            st.info("""
-            **🔐 機密性 (Confidentiality)**
-            
-            **今日の実践:**
-            • 二要素認証の選択
-            • フィッシング詐欺の回避
-            • 強力なパスワードの作成
-            
-            **効果:**
-            許可されていない人からの
-            情報アクセスを防ぐ
-            """)
+            st.markdown("""
+            <div style="background-color: #d1ecf1; border: 2px solid #bee5eb; padding: 20px; border-radius: 10px; color: #0c5460;">
+            <h4 style="color: #0c5460; margin-top: 0;">🔐 機密性 (Confidentiality)</h4>
+            <h5 style="color: #0c5460;">今日の実践:</h5>
+            <ul style="color: #0c5460; font-size: 15px; line-height: 1.6;">
+            <li>二要素認証の選択</li>
+            <li>フィッシング詐欺の回避</li>
+            <li>強力なパスワードの作成</li>
+            </ul>
+            <h5 style="color: #0c5460;">効果:</h5>
+            <p style="color: #0c5460; font-size: 15px;">許可されていない人からの情報アクセスを防ぐ</p>
+            </div>
+            """, unsafe_allow_html=True)
         
         with col2:
-            st.success("""
-            **✅ 完全性 (Integrity)**
-            
-            **関連する対策:**
-            • ウイルス対策ソフトの更新
-            • デジタル署名の確認
-            • 定期的なシステム更新
-            
-            **効果:**
-            データの改ざんや
-            破壊から守る
-            """)
+            st.markdown("""
+            <div style="background-color: #d4edda; border: 2px solid #c3e6cb; padding: 20px; border-radius: 10px; color: #155724;">
+            <h4 style="color: #155724; margin-top: 0;">✅ 完全性 (Integrity)</h4>
+            <h5 style="color: #155724;">関連する対策:</h5>
+            <ul style="color: #155724; font-size: 15px; line-height: 1.6;">
+            <li>ウイルス対策ソフトの更新</li>
+            <li>デジタル署名の確認</li>
+            <li>定期的なシステム更新</li>
+            </ul>
+            <h5 style="color: #155724;">効果:</h5>
+            <p style="color: #155724; font-size: 15px;">データの改ざんや破壊から守る</p>
+            </div>
+            """, unsafe_allow_html=True)
         
         with col3:
-            st.warning("""
-            **🔄 可用性 (Availability)**
-            
-            **関連する対策:**
-            • 定期的なバックアップ
-            • 災害復旧計画
-            • システムの冗長化
-            
-            **効果:**
-            いつでもサービスを
-            利用できる状態を維持
-            """)
+            st.markdown("""
+            <div style="background-color: #fff3cd; border: 2px solid #ffeaa7; padding: 20px; border-radius: 10px; color: #856404;">
+            <h4 style="color: #856404; margin-top: 0;">🔄 可用性 (Availability)</h4>
+            <h5 style="color: #856404;">関連する対策:</h5>
+            <ul style="color: #856404; font-size: 15px; line-height: 1.6;">
+            <li>定期的なバックアップ</li>
+            <li>災害復旧計画</li>
+            <li>システムの冗長化</li>
+            </ul>
+            <h5 style="color: #856404;">効果:</h5>
+            <p style="color: #856404; font-size: 15px;">いつでもサービスを利用できる状態を維持</p>
+            </div>
+            """, unsafe_allow_html=True)
         
         # 学習成果の可視化
         st.subheader("📊 あなたの学習成果")
