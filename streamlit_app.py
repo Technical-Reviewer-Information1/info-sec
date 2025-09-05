@@ -73,23 +73,38 @@ def create_password_strength_chart(score):
     fig.update_layout(height=300)
     return fig
 
-def create_security_threats_chart():
-    """セキュリティ脅威の統計チャート（IPA 2024年データベース）"""
-    # IPA 情報セキュリティ10大脅威 2024年版をベースにした脅威データ
-    threats_data = {
-        '脅威の種類': ['ランサムウェア', 'フィッシング詐欺', 'サプライチェーン攻撃', '標的型攻撃', 'ゼロデイ攻撃', 'その他'],
-        '重要度': [30, 25, 15, 12, 10, 8]
-    }
+def create_security_threats_ranking():
+    """IPA情報セキュリティ10大脅威 2024年版 ランキング表示"""
     
-    df = pd.DataFrame(threats_data)
+    # 組織向け脅威ランキング（IPA 2024年版）
+    org_threats = [
+        "ランサムウェア",
+        "サプライチェーンの弱点を悪用した攻撃",
+        "内部不正による情報漏えい",
+        "標的型攻撃による機密情報の窃取", 
+        "修正プログラムの公開前を狙う攻撃（ゼロデイ攻撃）",
+        "不注意による情報漏えい等の被害",
+        "脆弱性対策情報の公開に伴い公開前よりリスクが増加する脆弱性（整理番号7）",
+        "ビジネスメール詐欺による金銭被害",
+        "テレワーク等のニューノーマルな働き方を狙った攻撃",
+        "サイバー犯罪のビジネス化（アンダーグラウンドサービス）"
+    ]
     
-    fig = px.pie(df, values='重要度', names='脅威の種類',
-                 title='IPA 情報セキュリティ10大脅威 2024年版（組織向け重要脅威）',
-                 color_discrete_sequence=px.colors.qualitative.Set3)
+    # 個人向け脅威（順位付けなし、アルファベット順）
+    individual_threats = [
+        "インターネット上のサービスからの個人情報の窃取",
+        "インターネット上のサービスへの不正ログイン",
+        "クレジットカード情報の不正利用",
+        "スマホ決済の不正利用",
+        "偽警告によるインターネット詐欺",
+        "ネット上の誹謗・中傷・デマ",
+        "フィッシングによる個人情報等の詐取",
+        "悪意のあるスマートフォンアプリ",
+        "メール・SMS等を使った脅迫・詐欺の手口による金銭要求",
+        "ワンクリック請求等の不当請求による金銭被害"
+    ]
     
-    fig.update_traces(textposition='inside', textinfo='percent+label')
-    fig.update_layout(height=400)
-    return fig
+    return org_threats, individual_threats
 
 def main():
     st.set_page_config(
@@ -180,13 +195,50 @@ def main():
             </div>
             """, unsafe_allow_html=True)
         
-        # セキュリティ脅威の可視化
-        st.subheader("🚨 現在のサイバーセキュリティ脅威")
-        fig = create_security_threats_chart()
-        st.plotly_chart(fig, use_container_width=True)
+        # セキュリティ脅威のランキング表示
+        st.subheader("🚨 IPA情報セキュリティ10大脅威 2024年版")
         
-        st.caption("出典: IPA（独立行政法人情報処理推進機構）情報セキュリティ10大脅威 2024年版")
-        st.caption("参考URL: https://www.ipa.go.jp/security/10threats/10threats2024.html")
+        org_threats, individual_threats = create_security_threats_ranking()
+        
+        # タブで組織向けと個人向けを分離
+        tab1, tab2 = st.tabs(["🏢 組織向け脅威", "👤 個人向け脅威"])
+        
+        with tab1:
+            st.markdown("### 組織における脅威ランキング")
+            st.markdown("*IPAによる投票結果に基づく順位*")
+            
+            for i, threat in enumerate(org_threats, 1):
+                if i <= 3:
+                    # トップ3は強調表示
+                    medal = "🥇" if i == 1 else "🥈" if i == 2 else "🥉"
+                    bg_color = "#ffebee" if i == 1 else "#fff3e0" if i == 2 else "#fffde7"
+                    border_color = "#e57373" if i == 1 else "#ffb74d" if i == 2 else "#fff176"
+                    st.markdown(f"""
+                    <div style="background-color: {bg_color}; 
+                                padding: 12px; margin: 5px 0; border-radius: 8px; 
+                                border-left: 4px solid {border_color};">
+                    <h4 style="margin: 0; color: #2c3e50;">{medal} 第{i}位: {threat}</h4>
+                    </div>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.markdown(f"**{i}位**: {threat}")
+        
+        with tab2:
+            st.markdown("### 個人における脅威一覧")
+            st.markdown("*2024年版では個人向け脅威は順位付けなし（アルファベット順）*")
+            
+            # 2列で表示
+            col1, col2 = st.columns(2)
+            
+            for i, threat in enumerate(individual_threats):
+                target_col = col1 if i < 5 else col2
+                with target_col:
+                    st.markdown(f"• {threat}")
+        
+        st.markdown("---")
+        st.caption("📊 出典: IPA（独立行政法人情報処理推進機構）情報セキュリティ10大脅威 2024年版")
+        st.caption("🔗 参考URL: https://www.ipa.go.jp/security/10threats/10threats2024.html")
+        st.caption("⚠️ 組織向けは投票による順位付き、個人向けは順位なしで掲載")
         
         st.markdown("""
         さあ、これから始まるシミュレーションで、この盾をどう使っていくか体験してみましょう！
