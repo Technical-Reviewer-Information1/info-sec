@@ -491,41 +491,42 @@ def main():
             if char_space > 0 and length > 0:
                 combinations = char_space ** length
                 
-                # 様々な攻撃手法とハードウェア構成（現実的な値に修正）
+                # 様々な攻撃手法とハードウェア構成（2024年実測データに基づく）
+                # 出典: Hive Systems Password Table 2024, Hashcat GPU Benchmarks 2024
                 attack_methods = {
                     "個人PC（CPU）": {
-                        "speed": 100_000,  # 1秒で10万回（MD5ハッシュ解読）
+                        "speed": 100_000,  # 1秒で10万回（MD5ハッシュ解読、一般的なCPU）
                         "description": "Intel Core i7-13700K（約5万円）",
                         "cost": "5万円",
                         "accessibility": "🟢 個人レベル"
                     },
                     "ゲーミングPC（GPU）": {
-                        "speed": 5_000_000,  # 1秒で500万回
+                        "speed": 8_000_000_000,  # 80億回/秒（RTX 4070クラス、Hashcatベンチマーク）
                         "description": "NVIDIA RTX 4070（約10万円）",
                         "cost": "15万円",
                         "accessibility": "🟡 愛好家レベル"
                     },
                     "高性能GPU": {
-                        "speed": 15_000_000,  # 1秒で1500万回
+                        "speed": 24_000_000_000,  # 240億回/秒（RTX 4090、Hive Systems 2024）
                         "description": "NVIDIA RTX 4090（約25万円）",
                         "cost": "30万円",
                         "accessibility": "🟡 プロレベル"
                     },
                     "マイニングリグ": {
-                        "speed": 60_000_000,  # 1秒で6000万回
+                        "speed": 96_000_000_000,  # 960億回/秒（RTX 4090 × 4台構成）
                         "description": "RTX 4090 × 4台構成",
                         "cost": "120万円",
                         "accessibility": "🟠 組織レベル"
                     },
                     "専用クラスター": {
-                        "speed": 300_000_000,  # 1秒で3億回
-                        "description": "GPU 8台 + 専用サーバー",
+                        "speed": 288_000_000_000,  # 2880億回/秒（RTX 4090 × 12台、Hive Systems実測）
+                        "description": "RTX 4090 × 12台 + 専用サーバー",
                         "cost": "500万円",
                         "accessibility": "🔴 犯罪組織レベル"
                     },
                     "クラウドクラスター": {
-                        "speed": 1_000_000_000,  # 1秒で10億回
-                        "description": "AWS/Azure GPU大規模構成",
+                        "speed": 2_000_000_000_000,  # 2兆回/秒（A100 × 8台クラス、AWS/Azure）
+                        "description": "AWS/Azure A100 GPU大規模構成",
                         "cost": "時間課金（数万円/時間）",
                         "accessibility": "🔴 国家レベル"
                     }
@@ -610,8 +611,30 @@ def main():
                 - 🏆 最強例: パスワードマネージャーで生成された32文字ランダム文字列
                 """)
                 
+                st.markdown("""
+                ---
+                ### 📖 データ出典・参考文献
+
+                **解読時間の計算根拠:**
+                - **Hive Systems Password Table 2024**: セキュリティ企業Hive Systemsによる2024年版パスワード解読時間調査
+                  - RTX 4090（単体）: 8文字複雑パスワード（MD5）を59分で解読
+                  - RTX 4090（12台構成）: 8文字数字のみパスワードを37秒で解読
+                - **Hashcat GPU Benchmarks 2024**: オープンソースパスワード解読ツールの公式ベンチマーク
+                  - RTX 4080 Super: 84億パスワードを25分で処理（最適化後）
+                  - AWS GPU: Apple M1の15倍の性能
+
+                **重要な前提条件:**
+                - 計算はMD5ハッシュ（現在は非推奨）を基準
+                - bcryptなど安全なハッシュでは解読時間が大幅延長（RTX 4090でも99年以上）
+                - 実際の攻撃では辞書攻撃やルールベース攻撃が多用される
+
+                **参考URL:**
+                - Hive Systems: https://www.hivesystems.com/blog/are-your-passwords-in-the-green
+                - Hashcat: https://hashcat.net/hashcat/
+                """)
+
                 st.warning("""
-                **注意**: この情報は防御目的での教育用です。
+                **⚠️ 重要な注意事項**: この情報は防御目的での教育用です。
                 実際のパスワード攻撃は違法行為であり、絶対に行ってはいけません。
                 """)
         
