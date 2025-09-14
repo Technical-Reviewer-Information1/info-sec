@@ -486,45 +486,45 @@ def main():
             if has_lower: char_space += 26
             if has_upper: char_space += 26  
             if has_digit: char_space += 10
-            if has_symbol: char_space += 32
+            if has_symbol: char_space += 15  # 実際によく使われる記号の数
             
             if char_space > 0 and length > 0:
                 combinations = char_space ** length
                 
-                # 様々な攻撃手法とハードウェア構成
+                # 様々な攻撃手法とハードウェア構成（現実的な値に修正）
                 attack_methods = {
                     "個人PC（CPU）": {
-                        "speed": 1_000_000,  # 1秒で100万回
+                        "speed": 100_000,  # 1秒で10万回（MD5ハッシュ解読）
                         "description": "Intel Core i7-13700K（約5万円）",
                         "cost": "5万円",
                         "accessibility": "🟢 個人レベル"
                     },
                     "ゲーミングPC（GPU）": {
-                        "speed": 50_000_000,  # 1秒で5000万回
+                        "speed": 5_000_000,  # 1秒で500万回
                         "description": "NVIDIA RTX 4070（約10万円）",
                         "cost": "15万円",
                         "accessibility": "🟡 愛好家レベル"
                     },
                     "高性能GPU": {
-                        "speed": 100_000_000,  # 1秒で1億回
+                        "speed": 15_000_000,  # 1秒で1500万回
                         "description": "NVIDIA RTX 4090（約25万円）",
                         "cost": "30万円",
                         "accessibility": "🟡 プロレベル"
                     },
                     "マイニングリグ": {
-                        "speed": 500_000_000,  # 1秒で5億回
+                        "speed": 60_000_000,  # 1秒で6000万回
                         "description": "RTX 4090 × 4台構成",
                         "cost": "120万円",
                         "accessibility": "🟠 組織レベル"
                     },
                     "専用クラスター": {
-                        "speed": 2_000_000_000,  # 1秒で20億回
+                        "speed": 300_000_000,  # 1秒で3億回
                         "description": "GPU 8台 + 専用サーバー",
                         "cost": "500万円",
                         "accessibility": "🔴 犯罪組織レベル"
                     },
                     "クラウドクラスター": {
-                        "speed": 10_000_000_000,  # 1秒で100億回
+                        "speed": 1_000_000_000,  # 1秒で10億回
                         "description": "AWS/Azure GPU大規模構成",
                         "cost": "時間課金（数万円/時間）",
                         "accessibility": "🔴 国家レベル"
@@ -548,10 +548,14 @@ def main():
                         time_str = f"{seconds/3600:.1f}時間"
                     elif seconds < 31536000:
                         time_str = f"{seconds/86400:.0f}日"
-                    elif seconds < 31536000000:
+                    elif seconds < 31536000000:  # 1000年未満
                         time_str = f"{seconds/31536000:.0f}年"
+                    elif seconds < 31536000000000:  # 100万年未満
+                        time_str = f"{seconds/31536000/1000:.0f}千年"
+                    elif seconds < 31536000000000000:  # 10億年未満
+                        time_str = f"{seconds/31536000/1000000:.0f}百万年"
                     else:
-                        time_str = "数千年以上"
+                        time_str = "宇宙の年齢を超える"
                     
                     attack_data.append({
                         "ハードウェア構成": method_name,
