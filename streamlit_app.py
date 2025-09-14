@@ -114,7 +114,7 @@ def main():
         initial_sidebar_state="collapsed"
     )
     
-    st.title("🛡️ 情報セキュリティ")
+    st.title("情報セキュリティ（pp.220-224）")
     st.caption("Created by Dit-Lab.(Daiki ITO)")
     st.caption("Supported by Tomoaki ATSUMI")
     
