@@ -531,7 +531,7 @@ def main():
                     }
                 }
                 
-                st.subheader("🖥️ ハードウェア別 解読時間比較")
+                st.subheader("🖥️ ハードウェア別 解読時間比較（目安）")
                 
                 # テーブル形式で表示
                 attack_data = []
