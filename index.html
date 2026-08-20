@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>情報セキュリティ｜情報Ⅰ共通テスト対策問題集</title>
+<meta name="description" content="パスワードのパターン数を実際に計算し、二要素認証の流れをたどります。攻撃の種類も見分けられるようになります。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%2315181c%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2218%22 font-family=%22monospace%22 fill=%22%23fff%22 text-anchor=%22middle%22%3E01%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="inner">
+    <span class="eyebrow">第 8 章　情報社会　8-7</span>
+    <h1>情報セキュリティ（pp.222-224）</h1>
+    <p class="lead">パスワードのパターン数を実際に計算し、二要素認証の流れをたどります。攻撃の種類も見分けられるようになります。</p>
+    <p class="credit">Created by Dit-Lab.(Daiki ITO)　/　Supported by Tomoaki ATSUMI</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="step" id="step1">
+    <h2><span class="no">STEP 1</span>情報セキュリティの3要素（問1）</h2>
+    <p class="desc">機密性・完全性・可用性。それぞれ「守りたいこと」が違います。</p>
+    <div class="panel">
+      <div class="tri" id="triBox"></div>
+      <hr class="sep">
+      <p class="qhead">A〜C の対応は、どの性質を高めるものか</p>
+      <div id="abcBox"></div>
+      <div class="note" id="abcNote" style="margin-top:12px"></div>
+      <hr class="sep">
+      <div id="q1Box"></div>
+      <div class="note" id="q1Note" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <section class="step" id="step2">
+    <h2><span class="no">STEP 2</span>パスワードのパターン数（問5a）</h2>
+    <p class="desc">文字の種類と文字数を変えると、パターン数がどう変わるかを見てみましょう。</p>
+    <div class="panel">
+      <div class="grid c2">
+        <div>
+          <label class="fld"><input type="checkbox" id="useNum" checked> 数字（10種類）</label>
+          <label class="fld"><input type="checkbox" id="useLow" checked> 英小文字（26種類）</label>
+          <label class="fld"><input type="checkbox" id="useUp" checked> 英大文字（26種類）</label>
+          <label class="fld" for="pwLen" style="margin-top:12px">文字数：<span class="mono" id="pwLenV">10</span> 文字</label>
+          <input type="range" id="pwLen" min="4" max="16" step="1" value="10">
+          <div class="btn-row" style="margin-top:10px">
+            <button class="btn" id="pre10">本文の条件（10文字）</button>
+            <button class="btn" id="pre8">別サービス（8文字）</button>
+          </div>
+        </div>
+        <div>
+          <div class="pwbox">
+            <div class="small" style="color:var(--muted)">使える文字の種類</div>
+            <div class="pwout" id="kindV">—</div>
+            <div class="small" style="color:var(--muted);margin-top:10px">パターン数</div>
+            <div class="pwout" id="patV">—</div>
+            <div class="small" style="color:var(--muted);margin-top:10px">1秒に1億回試す機械で全部試すと</div>
+            <div class="pwout" id="timeV" style="font-size:1.1rem">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="eqbox" id="pwEq" style="margin-top:12px">—</div>
+      <div class="note" id="pwNote" style="margin-top:12px"></div>
+      <hr class="sep">
+      <div id="q5Box"></div>
+      <div class="note" id="q5Note" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <section class="step" id="step3">
+    <h2><span class="no">STEP 3</span>二要素認証の流れ（問4）</h2>
+    <p class="desc">ボタンで1ステップずつ進めます。何を確認しているのかに注目しましょう。</p>
+    <div class="panel">
+      <div class="btn-row"><button class="btn" id="authNext">次のステップ ▶</button><button class="btn" id="authReset">最初から</button></div>
+      <div class="authflow" id="authBox" style="margin-top:12px"></div>
+      <div class="note" id="authNote" style="margin-top:12px"></div>
+      <hr class="sep">
+      <div class="tbl-scroll"><table class="tbl" id="factorTable"></table></div>
+      <hr class="sep">
+      <div id="q4Box"></div>
+      <div class="note" id="q4Note" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <section class="step" id="step4">
+    <h2><span class="no">STEP 4</span>攻撃の手口を見分ける（問3）</h2>
+    <div class="panel">
+      <div class="attacks" id="atkBox"></div>
+      <div class="note" id="atkNote" style="margin-top:12px"></div>
+      <hr class="sep">
+      <div id="q3Box"></div>
+      <div class="note" id="q3Note" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <section class="step" id="step5">
+    <h2><span class="no">STEP 5</span>対策についての判断（問2・問5b）</h2>
+    <div class="panel">
+      <div id="q2Box"></div>
+      <div class="note" id="q2Note" style="margin-top:10px"></div>
+      <hr class="sep">
+      <div id="q6Box"></div>
+      <div class="note" id="q6Note" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <section class="step" id="glossary">
+    <h2><span class="no">用語</span>この節で出てくることば</h2>
+    <div class="panel"><div id="glossBox"></div></div>
+  </section>
+
+  <section class="step" id="wrap">
+    <h2><span class="no">まとめ</span>おさえておきたいこと</h2>
+    <div class="panel">
+      <ul class="bullets">
+        <li>情報セキュリティの3要素は<strong>機密性</strong>（許された人だけが見られる）・<strong>完全性</strong>（改ざんされていない）・<strong>可用性</strong>（必要なときに使える）。</li>
+        <li>パスワードのパターン数＝<strong>（使える文字の種類）<sup>文字数</sup></strong>。文字数を増やすほど、けた違いに強くなる。</li>
+        <li><strong>二要素認証</strong>は「知っていること（パスワード）」＋「持っていること（スマートフォン）」など、種類の違う2つで確認するしくみ。</li>
+        <li><strong>フィッシング</strong>＝本物を装ったメールや偽サイトで、暗証番号などを不正に取得する手口。</li>
+        <li>ウイルス対策ソフトを入れても<strong>感染しないとは限らない</strong>。人の心理につけこむ<strong>ソーシャルエンジニアリング</strong>にも注意。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2><span class="no">活用</span>授業・探究での使い方</h2>
+    <div class="use-note">
+      <h3>授業で</h3>
+      <ul>
+        <li>STEP 3 で文字数を1つ増やすとパターン数が何倍になるかを確かめさせる。</li>
+        <li>STEP 2 の三要素は、学校のシステムに当てはめて具体例を挙げさせる。</li>
+        <li>STEP 4 の攻撃の分類は、実際に届いた迷惑メールと照らし合わせる。</li>
+      </ul>
+      <h3 style="margin-top:12px">探究で</h3>
+      <ul>
+        <li>自分のパスワードの強さを、文字数と文字種の観点から見直す。</li>
+        <li>パスワードマネージャやパスキーのしくみを調べる。</li>
+        <li>学校や家庭でできるセキュリティ対策を洗い出して提案する。</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="app-footer">
+  情報Ⅰ 共通テスト対策問題集（技術評論社）連動Webアプリ　/　Created by Dit-Lab.(Daiki ITO)　/　Supported by Tomoaki ATSUMI
+</footer>
+
+<script src="js/tools.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/terms.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

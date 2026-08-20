@@ -1,48 +1,24 @@
-# 情報セキュリティ・サバイバルガイド
+# 情報セキュリティ
 
-体験的に学ぶ情報セキュリティWebアプリケーション
+『大学入学共通テスト「情報Ⅰ」対策問題集』（技術評論社, ISBN 978-4-297-15084-6）pp.222-224 連動Webアプリ。
 
-## 概要
+**公開URL**: https://technical-reviewer-information1.github.io/info-sec/
 
-このStreamlitアプリケーションは、ユーザーが「ログイン」「メールチェック」「フリーWi-Fi利用」といった日常的なデジタル活動を通じて、情報セキュリティの3要素（CIA：機密性、完全性、可用性）や認証の仕組み、フィッシング詐欺などの脅威への対処法を体験的に学ぶことができます。
+パスワードのパターン数を実際に計算し、二要素認証の流れをたどります。攻撃の種類も見分けられるようになります。
 
-## 機能
+## 技術
 
-### 学習コンテンツ
-1. **はじめに** - 情報セキュリティの3つの盾（CIA）の紹介
-2. **ログイン認証** - 二要素認証の重要性を学ぶシミュレーション
-3. **メールチェック** - フィッシング詐欺を見破る訓練
-4. **パスワード作成** - 強力なパスワードの作成とリアルタイム強度測定
-5. **まとめ** - 学習成果の可視化と今後のアクションプラン
+静的な HTML / CSS / JavaScript のみで動作します。ビルド不要・外部CDN不使用・サーバ通信なし。
+GitHub Pages で配信しており、Python や Streamlit は不要です。スマートフォン／タブレット／PC に対応。
 
-### インタラクティブ要素
-- リアルタイムパスワード強度メーター
-- セキュリティ脅威の統計可視化
-- 学習進捗の可視化
-- ステップバイステップの学習体験
-
-## セットアップ
-
-### 必要な依存関係
-```bash
-pip install -r requirements.txt
+```
+index.html
+css/style.css   全アプリ共通スタイル
+css/app.css     このアプリ固有のスタイル
+js/app.js       画面制御
 ```
 
-### 実行方法
-```bash
-streamlit run cybersecurity_app.py
-```
+`streamlit_app.py` は旧版（Streamlit Community Cloud 用）です。
 
-アプリケーションは `http://localhost:8501` で利用できます。
-
-## 技術仕様
-
-- **フレームワーク**: Streamlit
-- **可視化**: Plotly
-- **言語**: Python
-- **レスポンシブ対応**: あり
-
-## 作成者
-
-- Created by Dit-Lab.(Daiki ITO)
-- Supported by Tomoaki ATSUMI
+---
+Created by Dit-Lab.(Daiki ITO) / Supported by Tomoaki ATSUMI

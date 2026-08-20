@@ -1,0 +1,104 @@
+  <section class="step" id="step1">
+    <h2><span class="no">STEP 1</span>情報セキュリティの3要素（問1）</h2>
+    <p class="desc">機密性・完全性・可用性。それぞれ「守りたいこと」が違います。</p>
+    <div class="panel">
+      <div class="tri" id="triBox"></div>
+      <hr class="sep">
+      <p class="qhead">A〜C の対応は、どの性質を高めるものか</p>
+      <div id="abcBox"></div>
+      <div class="note" id="abcNote" style="margin-top:12px"></div>
+      <hr class="sep">
+      <div id="q1Box"></div>
+      <div class="note" id="q1Note" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <section class="step" id="step2">
+    <h2><span class="no">STEP 2</span>パスワードのパターン数（問5a）</h2>
+    <p class="desc">文字の種類と文字数を変えると、パターン数がどう変わるかを見てみましょう。</p>
+    <div class="panel">
+      <div class="grid c2">
+        <div>
+          <label class="fld"><input type="checkbox" id="useNum" checked> 数字（10種類）</label>
+          <label class="fld"><input type="checkbox" id="useLow" checked> 英小文字（26種類）</label>
+          <label class="fld"><input type="checkbox" id="useUp" checked> 英大文字（26種類）</label>
+          <label class="fld" for="pwLen" style="margin-top:12px">文字数：<span class="mono" id="pwLenV">10</span> 文字</label>
+          <input type="range" id="pwLen" min="4" max="16" step="1" value="10">
+          <div class="btn-row" style="margin-top:10px">
+            <button class="btn" id="pre10">本文の条件（10文字）</button>
+            <button class="btn" id="pre8">別サービス（8文字）</button>
+          </div>
+        </div>
+        <div>
+          <div class="pwbox">
+            <div class="small" style="color:var(--muted)">使える文字の種類</div>
+            <div class="pwout" id="kindV">—</div>
+            <div class="small" style="color:var(--muted);margin-top:10px">パターン数</div>
+            <div class="pwout" id="patV">—</div>
+            <div class="small" style="color:var(--muted);margin-top:10px">1秒に1億回試す機械で全部試すと</div>
+            <div class="pwout" id="timeV" style="font-size:1.1rem">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="eqbox" id="pwEq" style="margin-top:12px">—</div>
+      <div class="note" id="pwNote" style="margin-top:12px"></div>
+      <hr class="sep">
+      <div id="q5Box"></div>
+      <div class="note" id="q5Note" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <section class="step" id="step3">
+    <h2><span class="no">STEP 3</span>二要素認証の流れ（問4）</h2>
+    <p class="desc">ボタンで1ステップずつ進めます。何を確認しているのかに注目しましょう。</p>
+    <div class="panel">
+      <div class="btn-row"><button class="btn" id="authNext">次のステップ ▶</button><button class="btn" id="authReset">最初から</button></div>
+      <div class="authflow" id="authBox" style="margin-top:12px"></div>
+      <div class="note" id="authNote" style="margin-top:12px"></div>
+      <hr class="sep">
+      <div class="tbl-scroll"><table class="tbl" id="factorTable"></table></div>
+      <hr class="sep">
+      <div id="q4Box"></div>
+      <div class="note" id="q4Note" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <section class="step" id="step4">
+    <h2><span class="no">STEP 4</span>攻撃の手口を見分ける（問3）</h2>
+    <div class="panel">
+      <div class="attacks" id="atkBox"></div>
+      <div class="note" id="atkNote" style="margin-top:12px"></div>
+      <hr class="sep">
+      <div id="q3Box"></div>
+      <div class="note" id="q3Note" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <section class="step" id="step5">
+    <h2><span class="no">STEP 5</span>対策についての判断（問2・問5b）</h2>
+    <div class="panel">
+      <div id="q2Box"></div>
+      <div class="note" id="q2Note" style="margin-top:10px"></div>
+      <hr class="sep">
+      <div id="q6Box"></div>
+      <div class="note" id="q6Note" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <section class="step" id="glossary">
+    <h2><span class="no">用語</span>この節で出てくることば</h2>
+    <div class="panel"><div id="glossBox"></div></div>
+  </section>
+
+  <section class="step" id="wrap">
+    <h2><span class="no">まとめ</span>おさえておきたいこと</h2>
+    <div class="panel">
+      <ul class="bullets">
+        <li>情報セキュリティの3要素は<strong>機密性</strong>（許された人だけが見られる）・<strong>完全性</strong>（改ざんされていない）・<strong>可用性</strong>（必要なときに使える）。</li>
+        <li>パスワードのパターン数＝<strong>（使える文字の種類）<sup>文字数</sup></strong>。文字数を増やすほど、けた違いに強くなる。</li>
+        <li><strong>二要素認証</strong>は「知っていること（パスワード）」＋「持っていること（スマートフォン）」など、種類の違う2つで確認するしくみ。</li>
+        <li><strong>フィッシング</strong>＝本物を装ったメールや偽サイトで、暗証番号などを不正に取得する手口。</li>
+        <li>ウイルス対策ソフトを入れても<strong>感染しないとは限らない</strong>。人の心理につけこむ<strong>ソーシャルエンジニアリング</strong>にも注意。</li>
+      </ul>
+    </div>
+  </section>
