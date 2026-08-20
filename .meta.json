@@ -3,7 +3,11 @@
  "title": "情報セキュリティ",
  "pp": "pp.222-224",
  "lead": "パスワードのパターン数を実際に計算し、二要素認証の流れをたどります。攻撃の種類も見分けられるようになります。",
- "scripts": ["chart.js","terms.js","quiz.js","app.js"],
+ "scripts": [
+  "terms.js",
+  "quiz.js",
+  "app.js"
+ ],
  "use": {
   "class": [
    "STEP 3 で文字数を1つ増やすとパターン数が何倍になるかを確かめさせる。",
