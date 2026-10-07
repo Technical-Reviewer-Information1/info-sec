@@ -7,7 +7,7 @@
 <meta name="description" content="パスワードのパターン数を実際に計算し、二要素認証の流れをたどります。攻撃の種類も見分けられるようになります。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%2315181c%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2218%22 font-family=%22monospace%22 fill=%22%23fff%22 text-anchor=%22middle%22%3E01%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/style.css?v=bdbb3cb0">
-<link rel="stylesheet" href="css/app.css?v=cb0b3a23">
+<link rel="stylesheet" href="css/app.css?v=4eb703d7">
 </head>
 <body>
 
@@ -64,6 +64,13 @@
         </div>
       </div>
       <div class="eqbox" id="pwEq" style="margin-top:12px">—</div>
+
+      <div class="crack">
+        <div class="clabel">総当たりで破るのにかかる時間</div>
+        <div class="cscale"><span>1秒</span><span>1分</span><span>1時間</span><span>1日</span><span>1年</span><span>千年</span><span>100万年</span><span>1兆年</span></div>
+        <div class="ctrack"><i class="cfill" id="cFill"></i><i class="cmark" id="cMark"></i></div>
+        <div class="czone" id="cZone"></div>
+      </div>
       <div class="note" id="pwNote" style="margin-top:12px"></div>
       <hr class="sep">
       <div id="q5Box"></div>
@@ -152,6 +159,6 @@
 
 <script src="js/terms.js?v=b64c34e1"></script>
 <script src="js/quiz.js?v=13402362"></script>
-<script src="js/app.js?v=e96e88a3"></script>
+<script src="js/app.js?v=8c45248d"></script>
 </body>
 </html>

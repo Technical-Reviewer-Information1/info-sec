@@ -63,6 +63,7 @@
     else if (sec < 3.15e7) t = (sec / 86400).toFixed(1) + ' 日';
     else t = (sec / 3.15e7 < 1e6 ? Math.round(sec / 3.15e7).toLocaleString() + ' 年' : (sec / 3.15e7 / 1e8).toFixed(1) + ' 億年');
     $('timeV').textContent = 'およそ ' + t;
+    drawCrack(sec);
     const parts = [];
     if ($('useNum').checked) parts.push('10');
     if ($('useLow').checked) parts.push('26');
@@ -73,6 +74,23 @@
     nt.innerHTML = '文字数を1つ増やすと、パターン数は <strong>' + n + '倍</strong>になります。' +
       (L >= 10 ? '　10文字あれば、総当たりで破るのは現実的に困難です。' : '　文字数が少ないと、短時間で試しつくされてしまいます。') +
       '<br><span class="small">（実際の攻撃はよく使われる語から試すため、辞書に載っている語や誕生日は文字数が多くても危険です）</span>';
+  }
+
+
+  /* 解読時間を対数バーで見せる（左端1秒 → 右端1兆年） */
+  function drawCrack(sec) {
+    const YR = 3.15e7, LO = 1, HI = 1e12 * YR;
+    const t = Math.min(1, Math.max(0, (Math.log10(Math.max(LO, sec)) - Math.log10(LO)) / (Math.log10(HI) - Math.log10(LO))));
+    $('cFill').style.width = (t * 100) + '%';
+    $('cMark').style.left = 'calc(' + (t * 100) + '% - 1px)';
+    const z = $('cZone');
+    let k, msg;
+    if (sec < 3600)      { k = 0; msg = 'あっという間に破られます。'; }
+    else if (sec < YR)   { k = 1; msg = '数時間〜数日で破られます。危険です。'; }
+    else if (sec < 1e4 * YR) { k = 2; msg = '時間はかかりますが、機械を増やせば届く範囲です。'; }
+    else                 { k = 3; msg = '総当たりでは現実的に破れません。'; }
+    z.className = 'czone z' + k;
+    z.textContent = msg;
   }
 
   /* ===== STEP 3 ===== */

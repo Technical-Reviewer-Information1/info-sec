@@ -33,3 +33,18 @@ table.tbl td .blankin{width:100%; max-width:none}
 .attacks{display:grid;grid-template-columns:1fr;gap:10px}
 .attacks .a{border:1px solid var(--line);border-radius:3px;padding:10px 12px}
 .attacks .a .q{margin-bottom:8px;font-size:.94rem}
+
+/* --- 解読時間の対数バー（STEP 2） --- */
+.crack{margin-top:16px}
+.crack .clabel{font-size:.8rem;color:var(--ink-2);margin-bottom:8px}
+.cscale{display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-bottom:4px}
+.cscale span{flex:1;text-align:center}
+.ctrack{position:relative;height:16px;border-radius:8px;overflow:hidden;
+  background:#eef1f4;border:1px solid var(--rule)}
+.cfill{position:absolute;left:0;top:0;bottom:0;width:0;
+  background:linear-gradient(90deg,#c0392b 0%,#e07b39 28%,#e8c547 50%,#5a9e6f 78%,#2f7d4f 100%);
+  transition:width .6s cubic-bezier(.45,.05,.35,1)}
+.cmark{position:absolute;top:0;bottom:0;width:3px;background:var(--ink);opacity:.55;
+  transition:left .6s cubic-bezier(.45,.05,.35,1)}
+.czone{margin-top:8px;font-size:.84rem;font-weight:700}
+.czone.z0{color:#c0392b}.czone.z1{color:#c06a1e}.czone.z2{color:#8a7410}.czone.z3{color:#2f7d4f}
